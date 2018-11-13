@@ -8,30 +8,40 @@ import { RestProvider } from '../../providers/rest/rest';
   templateUrl: 'home.html'
 })
 export class HomePage {
-  num: any = [8,7,6,5,4,3,2,1];
+  //Variables a utilizar 
+  //Array donde iran los datos
   dat: any = {};
+  //Cantidad de años que el usuario evaluara
 	years: number;
   yrs: any;
+  //Array donde iran los PIBs
   pibs: any;
+  //Objeto que almacenara la respuesta del servidor
   response: any;
+  //Objeto JSON que se enviara con los datos al servidor
   json: any = '{"data": [';
+  //Response para la proxima implementacion de la grafica
   res: any;
+  //Constructor de la clase
   constructor(public navCtrl: NavController, public altCtrl: AlertController, public restProvider: RestProvider) {
   
   }
-
+  //Funcion que se ejecuta para mandar los datos al servidor
   datos(pibs:Array<number>){
-    this.pibs = pibs;
-    for (var i = 0; i < this.years; ++i) {
-      this.dat.year =  i;
-      this.dat.pib = pibs[i];
-      this.json = this.json + JSON.stringify(this.dat);
-      if (i != (this.years-1)) {
-        this.json = this.json + ",";
-      }
-    }   
-    this.json = this.json + "]}";
-    console.log(this.json);
+    try{
+      this.pibs = pibs;
+      //Se guardan los datos en strings que se forman en base a objetos JSON
+      for (var i = 0; i < this.years; ++i) {
+        this.dat.year =  i;
+        this.dat.pib = pibs[i];
+        this.json = this.json + JSON.stringify(this.dat);
+        if (i != (this.years-1)) {
+          this.json = this.json + ",";
+        }
+      }   
+      this.json = this.json + "]}";
+      console.log(this.json);
+      //Se instancia el provedor REST para enviar los datos al
       this.restProvider.sendDatos(this.json).then((result)=>{
         this.mostrar(result);
       }, (err) => {
@@ -43,7 +53,10 @@ export class HomePage {
         });
         alert.present();
       });
-    this.json = '{"data": [';
+      this.json = '{"data": [';
+    }catch(e){
+      console.log("Verificar que se hallan introducido todos los datos");
+    }
   }
 
   yearS(no: number){
@@ -53,7 +66,7 @@ export class HomePage {
     }
     this.pibs = new Array(no);
   }
-
+  //Funcion que valida la cantidad de años introducidos
   generarEntradas(years){
   	try{
   		if (years >= 1) {
@@ -65,7 +78,7 @@ export class HomePage {
   		else{
   			let alert = this.altCtrl.create({
   				title: "Error",
-  				subTitle: "Escribe un numero de anhios valido",
+  				subTitle: "Escribe un numero de años valido",
   				buttons: ['Ok']
   			});
   		  	alert.present();
@@ -79,10 +92,11 @@ export class HomePage {
   			alert.present();
   	}
   }
-
+  //Funcion que muestra la respuesta por parte del servidor una vez realizada la comunicacion
   mostrar(respuesta){
     this.response = JSON.parse(respuesta);
     console.log(this.response.predicciones);
+    //console.log(this.response.probabilidades);
     this.restProvider.traerDatos().then((result) =>{
       const img = document.querySelector("#analysis");
       this.res = JSON.stringify(result);
@@ -91,9 +105,6 @@ export class HomePage {
     },(err) => {
       console.log(err);
     });
-  }
-  contdr(){
-    return this.num.pop();
   }
 
 }

@@ -10,7 +10,7 @@
     <p>Aplicacion desarrollada para el analisis de la situacion economica de Mexico o cualquier otro pais.</p>
   </ion-card>
   <ion-card id="form1">
-    <ion-title>Bienvenido!</ion-title>
+    <ion-title>¡Bienvenido!</ion-title>
     <p>Introduce la cantidad de años que tomaras en cuenta para el analisis.</p>
     <form (ngSubmit)="generarEntradas(years)">
       <ion-item>
@@ -36,6 +36,9 @@
   <ng-container *ngIf="response != undefined">
     <ion-card>
       <ion-label>Resultados</ion-label>
+      <ion-label>C -> Crecimiento respecto al año anterior</ion-label>
+      <ion-label>I -> Igualdad respecto al año anterior</ion-label>
+      <ion-label>D -> Decrecimiento respecto al año anterior</ion-label>
       <ion-item *ngFor="let prediccion of response.predicciones; let indice = index">
         <p>Para el año numero {{indice+1}} se tiene como prediccion: {{prediccion}}</p>
       </ion-item>

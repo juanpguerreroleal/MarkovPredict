@@ -2,15 +2,18 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import { RestProvider } from '../../providers/rest/rest';
-
+//
 @Component({
   selector: 'page-home',
-  templateUrl: 'home.html'
+  templateUrl: 'home.html',
 })
 export class HomePage {
   //Variables a utilizar 
+  //Variable booleana para mostrar la introduccion de datos
+  valido: Boolean = false;
   //Array donde iran los datos
   dat: any = {};
+  probs: any = {};
   //Cantidad de años que el usuario evaluara
 	years: number;
   yrs: any;
@@ -70,7 +73,8 @@ export class HomePage {
   generarEntradas(years){
   	try{
   		if (years >= 1) {
-        this.years=years;
+        this.valido = true;
+        this.years = years;
         this.yearS(years);
         const btn1 = document.querySelector('#btn1');
         btn1.innerHTML = "Modificar";
@@ -95,8 +99,9 @@ export class HomePage {
   //Funcion que muestra la respuesta por parte del servidor una vez realizada la comunicacion
   mostrar(respuesta){
     this.response = JSON.parse(respuesta);
-    console.log(this.response.predicciones);
-    //console.log(this.response.probabilidades);
+    console.log(this.response.datos.url);
+    //console.log(this.response.datos.predicciones);
+    //console.log(this.response.datos.probabilidades);
     this.restProvider.traerDatos().then((result) =>{
       const img = document.querySelector("#analysis");
       this.res = JSON.stringify(result);

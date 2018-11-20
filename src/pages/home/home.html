@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="header">
     <ion-title>Inicio</ion-title>
   </ion-navbar>
 </ion-header>
@@ -17,16 +17,16 @@
         <ion-label>Numero de años</ion-label>
         <ion-input type="number" value="" [(ngModel)]="years" name="years"></ion-input>
       </ion-item>
-      <button ion-button color="primary" id="btn1" type="submit" block>Listo</button>
+      <button ion-button color="header" id="btn1" type="submit" block>Listo</button>
     </form>
   </ion-card>
-  <ng-container *ngIf="years > 0">
+  <ng-container *ngIf="valido==true">
     <ion-card id="form2">
       <ion-list>
         <form (ngSubmit)="datos(pibs)">
           <ion-item *ngFor="let year of yrs">
             <ion-label>PIB Año {{year+1}}:</ion-label>
-            <ion-input type="number" value="" [(ngModel)]="pibs[year]" name="pibs"></ion-input>
+            <ion-input type="number" value="0" [(ngModel)]="pibs[year]" name="pibs"></ion-input>
           </ion-item>
           <button ion-button color="secondary" type="submit" block>Listo</button>
         </form>
@@ -34,17 +34,18 @@
     </ion-card>
   </ng-container>
   <ng-container *ngIf="response != undefined">
-    <ion-card>
+    <ion-card color="res">
       <ion-label>Resultados</ion-label>
       <ion-label>C -> Crecimiento respecto al año anterior</ion-label>
       <ion-label>I -> Igualdad respecto al año anterior</ion-label>
       <ion-label>D -> Decrecimiento respecto al año anterior</ion-label>
-      <ion-item *ngFor="let prediccion of response.predicciones; let indice = index">
-        <p>Para el año numero {{indice+1}} se tiene como prediccion: {{prediccion}}</p>
+      <ion-item *ngFor="let prediccion of response.datos.predicciones; let indice = index">
+        <p>Para el año numero {{indice+1}} se tiene como prediccion: {{prediccion}} con las probabilidades de: {{response.datos.probabilidades[indice]}}</p>
       </ion-item>
       <ion-item>
         <img id="analysis" src="">
       </ion-item>
     </ion-card>
+    <img src="">
   </ng-container>
 </ion-content>
